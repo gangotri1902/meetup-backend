@@ -39,11 +39,5 @@ def flatten_randomuser(user:Dict[str,Any]) -> Optional[Dict[str,Any]]:
         return None
     
     
-sample_user = {
-    "login": {"uuid": "668f6654-99a0-454a-8234-a81cc635ebb7"},
-    "email": "marie.larsen@example.com",
-    "name": {"first": "Marie", "last": "Larsen"},
-    "gender": "female",
-    "location": {"coordinates": {"latitude": "55.6761", "longitude": "12.5683"}}
-}
+
 
