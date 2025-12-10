@@ -15,3 +15,35 @@ def haversine(lat1:float,lon1:float,lat2:float,lon2:float) -> float:
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
     return R * c
 
+def flatten_randomuser(user:Dict[str,Any]) -> Optional[Dict[str,Any]]:
+    try:
+        uid=user.get("login",{}).get("uuid")
+        email=user.get("email")
+        first_name=user.get("name",{}).get("first")
+        last_name=user.get("name",{}).get("last")
+        gender=user.get("gender")
+        lat=float(user.get("location",{}).get("coordinates",{}).get("latitude"))
+        lon=float(user.get("location",{}).get("coordinates",{}).get("longitude"))
+        if not uid or not email or lat is None or lon is None:
+            return None
+        return{
+          "uid":str(uid),
+           "email":str(email),
+           "first_name":first_name if first_name is not None else "",
+           "last_name":last_name if last_name is not None else "",
+           "gender":gender if gender is not None else "",
+           "latitude":lat,
+           "longitude":lon 
+        }
+    except Exception:
+        return None
+    
+    
+sample_user = {
+    "login": {"uuid": "668f6654-99a0-454a-8234-a81cc635ebb7"},
+    "email": "marie.larsen@example.com",
+    "name": {"first": "Marie", "last": "Larsen"},
+    "gender": "female",
+    "location": {"coordinates": {"latitude": "55.6761", "longitude": "12.5683"}}
+}
+
