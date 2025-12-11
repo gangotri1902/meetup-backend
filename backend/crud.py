@@ -69,7 +69,35 @@ def insert_many_users(conn,users):
                     """,rows_toinsert,)  
     conn.commit()
     return len(rows_toinsert)  
+
+def row_to_dict(row):
+    return dict(row)
+
+
+def get_all_users(conn):
+    cur=conn.cursor()
+    cur.execute("SELECT * FROM users")
+    rows=cur.fetchall()
+    return [row_to_dict(r) for r in rows]
  
+ 
+
+def get_user_by_uid(conn,uid):
+    cur=conn.cursor()
+    cur.execute("SELECT * FROM users WHERE uid=?",(uid,))
+    row=cur.fetchone()
+    return row_to_dict(row) if row else None
+
+def get_user_by_email(conn,email):
+    cur=conn.cursor()
+    cur.execute("SELECT * FROM user WHERE email=?",(email,))
+    row=cur.fetchone()
+    return row_to_dict(row) if row else None
+
+
+    
+
+
         
         
     
