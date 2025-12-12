@@ -1,4 +1,5 @@
 import math
+from typing import Optional,Dict,Any
 from datetime import datetime
 import uuid
 
@@ -21,25 +22,37 @@ def haversine(lat1,lon1,lat2,lon2):
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
     return R * c
 
-def flatten_randomuser(user):
+def flatten_randomuser(user: dict) -> dict | None:
     try:
-        uid=user.get("login",{}).get("uuid")
-        email=user.get("email")
-        first_name=user.get("name",{}).get("first")
-        last_name=user.get("name",{}).get("last")
-        gender=user.get("gender")
-        lat=float(user.get("location",{}).get("coordinates",{}).get("latitude"))
-        lon=float(user.get("location",{}).get("coordinates",{}).get("longitude"))
-        if not uid or not email or lat is None or lon is None:
+       
+        login = user.get("login", {})
+        name = user.get("name", {})
+        location = user.get("location", {})
+        coordinates = location.get("coordinates", {})
+
+        uid = login.get("uuid")
+        email = user.get("email")
+        lat_str = coordinates.get("latitude")
+        lon_str = coordinates.get("longitude")
+
+      
+        if not uid or not email or lat_str is None or lon_str is None:
             return None
-        return{
-          "uid":str(uid),
-           "email":str(email),
-           "first_name":first_name if first_name is not None else "",
-           "last_name":last_name if last_name is not None else "",
-           "gender":gender if gender is not None else "",
-           "latitude":lat,
-           "longitude":lon 
+
+        try:
+            latitude = float(lat_str)
+            longitude = float(lon_str)
+        except (ValueError, TypeError):
+            return None
+
+        return {
+            "uid": str(uid),
+            "email": str(email),
+            "first_name": name.get("first", "") or "",
+            "last_name":  name.get("last", "") or "",
+            "gender": user.get("gender", "") or "",
+            "latitude": latitude,
+            "longitude": longitude
         }
     except Exception:
         return None

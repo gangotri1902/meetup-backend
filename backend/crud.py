@@ -103,7 +103,7 @@ def count_users(conn):
 
 def get_random_user(conn):
     cur=conn.cursor()
-    cur.execute("SELECT * FROM users ORDER BY RANDOM() LIMT 1")
+    cur.execute("SELECT * FROM users ORDER BY RANDOM() LIMIT 1")
     row=cur.fetchone()
     return row_to_dict(row) if row else None
 
