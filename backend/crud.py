@@ -1,4 +1,5 @@
 import sqlite3
+import random
 
 DB_PATH="users.db"
 
@@ -13,9 +14,9 @@ def create_users_table(conn):
      CREATE TABLE IF NOT EXISTS users(
          id INTEGER PRIMARY KEY AUTOINCREMENT,
          uid TEXT,
-         emai TEXT,
+         email TEXT,
          first_name TEXT,
-         lasi_name  TEXT,
+         last_name  TEXT,
          gender TEXT,
          latitude REAL,
          longitude REAL,
@@ -34,7 +35,7 @@ def insert_user(conn,user):
          VALUES(?,?,?,?,?,?,?,?,?)        
                     """,(
                         user["uid"],
-                        user["emai"],
+                        user["email"],
                         user.get("first_name",""),
                         user.get("last_name",""),
                         user.get("gender",""),
@@ -90,7 +91,7 @@ def get_user_by_uid(conn,uid):
 
 def get_user_by_email(conn,email):
     cur=conn.cursor()
-    cur.execute("SELECT * FROM user WHERE email=?",(email,))
+    cur.execute("SELECT * FROM users WHERE email=?",(email,))
     row=cur.fetchone()
     return row_to_dict(row) if row else None
 
@@ -99,6 +100,18 @@ def count_users(conn):
     cur.execute("SELECT COUNT(*) AS c FROM users")
     row=cur.fetchone()
     return int(row["c"]) if row else 0
+
+def get_random_user(conn):
+    cur=conn.cursor()
+    cur.execute("SELECT * FROM users ORDER BY RANDOM() LIMT 1")
+    row=cur.fetchone()
+    return row_to_dict(row) if row else None
+
+def get_all_users_except_uid(conn,uid):
+    cur=conn.cursor()
+    cur.execute("SELECT * FROM users WHERE uid!=?",(uid,))
+    rows=cur.fetchall()
+    return [row_to_dict(r) for r in rows]
 
     
 
