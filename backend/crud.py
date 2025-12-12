@@ -94,6 +94,11 @@ def get_user_by_email(conn,email):
     row=cur.fetchone()
     return row_to_dict(row) if row else None
 
+def count_users(conn):
+    cur=conn.cursor()
+    cur.execute("SELECT COUNT(*) AS c FROM users")
+    row=cur.fetchone()
+    return int(row["c"]) if row else 0
 
     
 
