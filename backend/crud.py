@@ -14,7 +14,7 @@ def create_users_table(conn):
      CREATE TABLE IF NOT EXISTS users(
          id INTEGER PRIMARY KEY AUTOINCREMENT,
          uid TEXT,
-         email TEXT,
+         email TEXT UNIQUE,
          first_name TEXT,
          last_name  TEXT,
          gender TEXT,
