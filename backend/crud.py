@@ -1,5 +1,5 @@
 import sqlite3
-import random
+
 
 DB_PATH="users.db"
 
