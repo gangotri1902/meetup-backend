@@ -30,16 +30,16 @@ def flatten_randomuser(user: dict) -> dict | None:
 
         uid = login.get("uuid")
         email = user.get("email")
-        lat_str = coordinates.get("latitude")
-        lon_str = coordinates.get("longitude")
+        lat = coordinates.get("latitude")
+        lon = coordinates.get("longitude")
 
       
-        if not uid or not email or lat_str is None or lon_str is None:
+        if not uid or not email or lat is None or lon is None:
             return None
 
         try:
-            latitude = float(lat_str)
-            longitude = float(lon_str)
+            latitude = float(lat)
+            longitude = float(lon)
         except (ValueError, TypeError):
             return None
 
